@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ECLIPSE — A Living Interface</title>
+<meta name="description" content="ECLIPSE — an ultra cinematic experimental web experience.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040404;--fg:#f5f2ea;--muted:#85837e;--line:rgba(245,242,234,.13);--acid:#e4ff65;--violet:#9a82ff}
+*{box-sizing:border-box}html{background:#040404;scroll-behavior:auto}body{margin:0;background:#040404;color:var(--fg);font-family:"DM Sans",sans-serif;overflow-x:hidden}a{color:inherit;text-decoration:none}::selection{background:var(--acid);color:#000}
+#scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}.grain{position:fixed;inset:-50%;z-index:30;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain .16s steps(2) infinite}@keyframes grain{to{transform:translate(1.5%,-1%)}}
+.nav{position:fixed;z-index:50;left:0;right:0;top:0;padding:25px 32px;display:flex;align-items:center;justify-content:space-between;mix-blend-mode:difference}.logo{font:700 15px "Space Grotesk";letter-spacing:.25em}.navlinks{display:flex;gap:24px;font-size:9px;text-transform:uppercase;letter-spacing:.18em}.navlinks a{opacity:.6;transition:.3s}.navlinks a:hover{opacity:1}.time{font:500 9px "Space Grotesk";letter-spacing:.14em;color:#999}
+.cursor{position:fixed;z-index:60;width:15px;height:15px;border:1px solid var(--acid);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;mix-blend-mode:difference;transition:.25s}.cursor.active{width:70px;height:70px;background:var(--acid);border-color:var(--acid)}
+.progress{position:fixed;z-index:51;top:0;left:0;width:100%;height:2px}.progress i{display:block;width:0;height:100%;background:var(--acid)}
+main{position:relative;z-index:2}.hero{min-height:125vh;padding:9vw 6vw 7vw;display:flex;align-items:flex-end;position:relative}.hero-copy{max-width:1280px;width:100%}.eyebrow{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--acid);margin-bottom:30px}.hero h1{font:500 clamp(80px,16vw,240px)/.68 "Space Grotesk";letter-spacing:-.1em;margin:0;position:relative}.hero h1 .outline{color:transparent;-webkit-text-stroke:1px rgba(245,242,234,.34)}.hero-note{display:flex;justify-content:space-between;gap:30px;max-width:900px;margin-top:50px}.hero-note p{margin:0;max-width:460px;color:#aaa;line-height:1.8}.hero-note span{align-self:end;color:#65635e;font-size:9px;letter-spacing:.18em;text-transform:uppercase}
+.hero-photo{position:absolute;right:8vw;top:16vh;width:min(31vw,470px);height:min(47vw,630px);overflow:hidden;z-index:-1;clip-path:inset(100% 0 0 0);animation:clip 1.8s cubic-bezier(.77,0,.18,1) .25s forwards}.hero-photo img{width:100%;height:100%;object-fit:cover;filter:contrast(1.12) saturate(.5);transform:scale(1.15);animation:zoom 2.5s cubic-bezier(.2,.65,.2,1) .25s forwards}@keyframes clip{to{clip-path:inset(0)}}@keyframes zoom{to{transform:scale(1)}}
+.center{min-height:100vh;padding:12vw 7vw;display:flex;align-items:center;justify-content:center;text-align:center}.center h2{font:500 clamp(50px,9vw,138px)/.85 "Space Grotesk";letter-spacing:-.08em;margin:0;max-width:1150px}.center h2 span{color:#6b6964}
+.editorial{min-height:100vh;padding:12vw 7vw;display:grid;grid-template-columns:1fr 1.7fr;gap:9vw;align-items:center}.index{font:500 10px "Space Grotesk";letter-spacing:.2em;color:var(--acid)}.editorial h2{font:500 clamp(55px,7.5vw,112px)/.84 "Space Grotesk";letter-spacing:-.075em;margin:0 0 30px}.editorial p{max-width:520px;color:#999;line-height:1.85}.facts{display:grid;grid-template-columns:1fr 1fr;max-width:520px;margin-top:45px;border-top:1px solid var(--line)}.fact{padding:16px 0;border-bottom:1px solid var(--line)}.fact small{display:block;color:#666;font-size:8px;text-transform:uppercase;letter-spacing:.15em}.fact strong{font:500 24px "Space Grotesk"}
+.story{min-height:120vh;position:relative;overflow:hidden;padding:10vw 7vw}.story-bg{position:absolute;inset:0;overflow:hidden;z-index:-1}.story-bg img{width:100%;height:120%;object-fit:cover;filter:brightness(.35) saturate(.55);transform:scale(1.08)}.story:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.15) 65%,rgba(0,0,0,.7));z-index:-1}.story-content{min-height:100vh;display:flex;align-items:center}.story h2{font:500 clamp(65px,11vw,165px)/.74 "Space Grotesk";letter-spacing:-.09em;margin:0}.story p{max-width:420px;color:#aaa;line-height:1.8;margin-top:35px}
+.archive{min-height:100vh;padding:11vw 0;overflow:hidden}.archive-head{padding:0 7vw 55px;display:flex;justify-content:space-between;align-items:end}.archive-head h2{font:500 clamp(55px,8vw,120px)/.78 "Space Grotesk";letter-spacing:-.085em;margin:0}.archive-head span{color:#666;font-size:9px;text-transform:uppercase;letter-spacing:.18em}.rail{display:flex;gap:18px;width:max-content;padding-left:7vw}.card{width:44vw;max-width:720px;height:66vh;min-height:440px;position:relative;overflow:hidden;background:#111}.card:nth-child(2){width:31vw;height:51vh;margin-top:100px}.card:nth-child(3){width:46vw;height:72vh}.card:nth-child(4){width:30vw;height:56vh;margin-top:60px}.card img{width:100%;height:100%;object-fit:cover;filter:grayscale(.25) saturate(.65) contrast(1.12);transition:transform 1.3s cubic-bezier(.2,.65,.2,1),filter .8s}.card:hover img{transform:scale(1.09);filter:grayscale(0) saturate(.9) contrast(1.08)}.card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.8));pointer-events:none}.card figcaption{position:absolute;z-index:2;left:20px;right:20px;bottom:18px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.17em;text-transform:uppercase}
+.dual{min-height:110vh;display:grid;grid-template-columns:1fr 1fr}.dual-media{overflow:hidden;position:relative}.dual-media img{width:100%;height:115%;object-fit:cover;filter:contrast(1.1) saturate(.45)}.dual-media:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.05),rgba(0,0,0,.7))}.dual-copy{background:#080808;display:flex;align-items:center;padding:12vw 8vw}.dual-copy h2{font:500 clamp(58px,8vw,120px)/.8 "Space Grotesk";letter-spacing:-.08em;margin:0 0 30px}.dual-copy p{max-width:430px;color:#97958f;line-height:1.8}.mini{margin-top:45px;border-top:1px solid var(--line)}.mini div{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line);font-size:9px;letter-spacing:.13em;text-transform:uppercase}.mini b{font-weight:500;color:#ddd}
+.impact{min-height:90vh;padding:12vw 7vw;display:flex;align-items:center}.impact h2{font:500 clamp(70px,14vw,210px)/.7 "Space Grotesk";letter-spacing:-.095em;margin:0}.impact em{font-style:normal;color:var(--violet)}
+.final{min-height:110vh;display:flex;align-items:center;justify-content:center;text-align:center}.final h2{font:500 clamp(80px,16vw,235px)/.68 "Space Grotesk";letter-spacing:-.1em;margin:0}.final p{max-width:440px;color:#97948e;line-height:1.8;margin:45px auto 30px}.cta{display:inline-block;border:1px solid rgba(228,255,101,.5);padding:16px 25px;font-size:9px;text-transform:uppercase;letter-spacing:.19em;transition:.35s}.cta:hover{background:var(--acid);color:#000}
+footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:25px 32px;display:flex;justify-content:space-between;color:#5d5c58;font-size:8px;text-transform:uppercase;letter-spacing:.16em}
+@media(max-width:850px){.nav{padding:20px}.navlinks{display:none}.hero{padding:30vw 7vw 18vw}.hero-photo{width:40vw;height:53vw;right:7vw;top:21vh;opacity:.52}.hero-note{display:block}.hero-note span{display:block;margin-top:25px}.editorial{grid-template-columns:1fr;gap:45px;padding:25vw 7vw}.center{padding:25vw 7vw}.story{padding:25vw 7vw}.archive{padding:22vw 0}.card,.card:nth-child(2),.card:nth-child(3),.card:nth-child(4){width:78vw;height:60vh;margin-top:0}.archive-head{padding:0 7vw 45px}.dual{grid-template-columns:1fr}.dual-media{min-height:72vh}.dual-copy{min-height:90vh;padding:22vw 9vw}}
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas><div class="grain"></div><div class="cursor" id="cursor"></div><div class="progress"><i id="bar"></i></div>
+<nav class="nav"><a class="logo" href="#">ECLIPSE/04</a><div class="navlinks"><a href="#idea">Idea</a><a href="#archive">Scenes</a><a href="#world">World</a><a href="#end">Exit</a></div><span class="time">LIVE / 2026</span></nav>
+
+<main>
+<section class="hero">
+ <div class="hero-photo"><img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1500&q=92" alt="Landscape"></div>
+ <div class="hero-copy"><div class="eyebrow">ECLIPSE — A living interface / 2026</div><h1>NOT<br><span class="outline">A</span><br>WEBSITE.</h1><div class="hero-note"><p>A cinematic digital experience built from light, photography, depth and motion. The page is only the surface.</p><span>Scroll to begin ↓</span></div></div>
+</section>
+
+<section class="center" id="idea"><div><div class="eyebrow">01 / The idea</div><h2>The interface disappears.<br><span>The experience remains.</span></h2></div></section>
+
+<section class="editorial">
+ <div class="index">02 / Direction</div>
+ <div><h2>Every pixel<br>has a role.</h2><p>Images become scenes. Typography becomes architecture. Scroll becomes a camera. The background becomes a living atmosphere. Nothing is decoration for decoration's sake.</p><div class="facts"><div class="fact"><small>Visual</small><strong>Editorial</strong></div><div class="fact"><small>Motion</small><strong>Choreographed</strong></div><div class="fact"><small>Depth</small><strong>Real-time</strong></div><div class="fact"><small>Feeling</small><strong>Immersive</strong></div></div></div>
+</section>
+
+<section class="story">
+ <div class="story-bg"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1900&q=92" alt="Forest"></div>
+ <div class="story-content"><div><div class="eyebrow">03 / The atmosphere</div><h2>ENTER<br>THE<br>UNKNOWN.</h2><p>Scroll through the scene and watch the world move behind the typography — like a camera crossing a physical space.</p></div></div>
+</section>
+
+<section class="archive" id="archive">
+ <div class="archive-head"><h2>SCENES<br>FROM<br>ANOTHER<br>WORLD.</h2><span>Archive / 04 frames</span></div>
+ <div class="rail">
+  <figure class="card"><img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1600&q=92" alt="Architecture"><figcaption><span>01 / Structure</span><span>Frame</span></figcaption></figure>
+  <figure class="card"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1700&q=92" alt="Mountain"><figcaption><span>02 / Scale</span><span>Terrain</span></figcaption></figure>
+  <figure class="card"><img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1600&q=92" alt="Forest"><figcaption><span>03 / Silence</span><span>Nature</span></figcaption></figure>
+  <figure class="card"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=92" alt="Road"><figcaption><span>04 / Velocity</span><span>Departure</span></figcaption></figure>
+ </div>
+</section>
+
+<section class="dual" id="world">
+ <div class="dual-media"><img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1600&q=92" alt="Earth from space"></div>
+ <div class="dual-copy"><div><div class="eyebrow">04 / The world</div><h2>MAKE<br>THE<br>SCREEN<br>MOVE.</h2><p>A real-time WebGL object floats behind the story, reacting to cursor position and scroll depth. It is not a hero image. It is part of the environment.</p><div class="mini"><div><span>Object</span><b>Generative</b></div><div><span>Camera</span><b>Reactive</b></div><div><span>Atmosphere</span><b>Particle field</b></div><div><span>Rendering</span><b>GPU</b></div></div></div></div>
+</section>
+
+<section class="impact"><h2>THE WEB<br>CAN BE<br><em>ALIVE.</em></h2></section>
+
+<section class="final" id="end"><div><div class="eyebrow">05 / Final scene</div><h2>BREAK<br>THE<br>FRAME.</h2><p>ECLIPSE is a visual direction for websites that refuse to look like websites.</p><a class="cta" href="#top">Replay experience ↗</a></div></section>
+</main>
+<footer><span>ECLIPSE/04 — A Living Interface</span><span>© 2026 / Digital Experience</span></footer>
+
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+import {EffectComposer} from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/postprocessing/EffectComposer.js";
+import {RenderPass} from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/postprocessing/RenderPass.js";
+import {UnrealBloomPass} from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/postprocessing/UnrealBloomPass.js";
+import Lenis from "https://cdn.jsdelivr.net/npm/lenis@1.3.8/+esm";
+import gsap from "https://cdn.jsdelivr.net/npm/gsap@3.13.0/index.js";
+import {ScrollTrigger} from "https://cdn.jsdelivr.net/npm/gsap@3.13.0/ScrollTrigger.js";
+gsap.registerPlugin(ScrollTrigger);
+
+const canvas=document.querySelector("#scene");
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:"high-performance"});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,.1,100);
+camera.position.set(0,0,7);
+
+const world=new THREE.Group();scene.add(world);
+const core=new THREE.Mesh(new THREE.IcosahedronGeometry(1.5,5),new THREE.MeshPhysicalMaterial({color:0x0d100b,metalness:.92,roughness:.16,clearcoat:1,clearcoatRoughness:.06,emissive:0x18200d,emissiveIntensity:.7}));
+world.add(core);
+world.add(new THREE.Mesh(new THREE.IcosahedronGeometry(1.74,2),new THREE.MeshBasicMaterial({color:0xe4ff65,wireframe:true,transparent:true,opacity:.1})));
+
+for(let i=0;i<6;i++){const t=new THREE.Mesh(new THREE.TorusGeometry(1.95+i*.25,.009,8,240),new THREE.MeshBasicMaterial({color:i%3===0?0x9a82ff:0xe4ff65,transparent:true,opacity:.2}));t.rotation.x=i*.55;t.rotation.y=i*.31;t.rotation.z=i*.17;world.add(t)}
+
+const n=6000,a=new Float32Array(n*3);
+for(let i=0;i<n;i++){const r=2.7+Math.random()*8,a1=Math.random()*Math.PI*2,b=Math.acos(2*Math.random()-1);a[i*3]=r*Math.sin(b)*Math.cos(a1);a[i*3+1]=r*Math.sin(b)*Math.sin(a1);a[i*3+2]=r*Math.cos(b)}
+const pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.BufferAttribute(a,3));
+scene.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0xc6ccbd,size:.01,transparent:true,opacity:.42})));
+
+scene.add(new THREE.AmbientLight(0x2a2a27,1.6));
+const l1=new THREE.PointLight(0xe4ff65,65,20),l2=new THREE.PointLight(0x9a82ff,48,17),l3=new THREE.PointLight(0xff6d42,25,14);
+l1.position.set(3,2,4);l2.position.set(-4,-2,2);l3.position.set(0,4,-3);scene.add(l1,l2,l3);
+
+const composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,camera));composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.7,.8,.13));
+
+const lenis=new Lenis({duration:1.12,smoothWheel:true});
+function raf(t){lenis.raf(t);requestAnimationFrame(raf)}requestAnimationFrame(raf);
+let mx=0,my=0,scroll=0;
+addEventListener("mousemove",e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+addEventListener("scroll",()=>scroll=scrollY);
+
+function animate(t){
+ requestAnimationFrame(animate);
+ const p=scroll/Math.max(1,document.body.scrollHeight-innerHeight);
+ world.rotation.x+=.0012;world.rotation.y+=.0025;world.rotation.x+=my*.00045;world.rotation.y+=mx*.00065;
+ world.position.y=Math.sin(t*.0004)*.08;world.position.z=p*2;world.scale.setScalar(1+Math.sin(t*.0011)*.025+p*.16);
+ camera.position.x+=(mx*.38-camera.position.x)*.025;camera.position.y+=(-my*.2-camera.position.y)*.025;camera.lookAt(0,0,0);
+ l1.position.x=3+mx*3;l1.position.y=2-my*2;l2.position.x=-4-mx*2;l3.position.z=-3+p*5;
+ composer.render();document.querySelector("#bar").style.width=p*100+"%";
+}
+animate(0);
+
+const rail=document.querySelector(".rail");
+gsap.to(rail,{x:()=>-(rail.scrollWidth-innerWidth*.92),ease:"none",scrollTrigger:{trigger:".archive",start:"top top",end:()=>"+="+(rail.scrollWidth-innerWidth),pin:true,scrub:1.05,anticipatePin:1}});
+gsap.to(".story-bg img",{yPercent:-14,ease:"none",scrollTrigger:{trigger:".story",start:"top bottom",end:"bottom top",scrub:true}});
+gsap.to(".hero-photo img",{yPercent:-13,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:true}});
+gsap.to(".hero h1",{yPercent:18,opacity:.5,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:true}});
+
+document.querySelectorAll(".center,.editorial,.dual-copy,.impact,.final").forEach(el=>gsap.fromTo(el,{y:85,opacity:0},{y:0,opacity:1,duration:1.2,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 82%",once:true}}));
+const cursor=document.querySelector("#cursor");
+addEventListener("mousemove",e=>{cursor.style.left=e.clientX+"px";cursor.style.top=e.clientY+"px"});
+document.querySelectorAll("a,.card,.hero-photo").forEach(el=>{el.addEventListener("mouseenter",()=>cursor.classList.add("active"));el.addEventListener("mouseleave",()=>cursor.classList.remove("active"))});
+addEventListener("resize",()=>{renderer.setSize(innerWidth,innerHeight);composer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();ScrollTrigger.refresh()});
+</script>
+</body>
+</html>
